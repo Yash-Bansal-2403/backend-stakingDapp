@@ -8,10 +8,10 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
   const { deploy, log } = deployments;
   const { deployer } = await getNamedAccounts(); //In Local dev chain,hardhat auto gives it first account,these accounts are not specified in config file
   const chainId = network.config.chainId;
-  // If we are on a local development network, we need to deploy mocks!
+  // If we are on a local development network, we need to deploy mocks! no need to deloy mocks on real testnet
   if (chainId == 31337) {
     log("Local network detected! Deploying mocks...");
-    await deploy("ERC20NTROMock", {
+    await deploy("NeutronToken", {
       from: deployer,
       log: true,
       args: [MAX_TOKEN_SUPPLY, REWARD],
@@ -20,9 +20,7 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
 
     log("Mocks Deployed!");
     log("----------------------------------------------------------");
-    log(
-      "You are deploying to a local network, you'll need a local network running to interact ie. hardhat node"
-    );
+    log("You are deploying to a local network, you'll need a local network running to interact ie. hardhat node");
     log(
       "Please run `npx/yarn hardhat console --network localhost` to interact with the deployed smart contracts from terminal directly,it will open up the hardhat console! and add this network in metamask and reset whenever we run localhost again"
     );

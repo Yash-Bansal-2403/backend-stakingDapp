@@ -1,11 +1,7 @@
 const { network, ethers } = require("hardhat"); //ethers from hardhat
-const {
-  networkConfig,
-  developmentChains,
-  VERIFICATION_BLOCK_CONFIRMATIONS,
-} = require("../helper-hardhat-config"); //just data written not code and import every here,,so that we can change only there any fix data, like..see that File
-
-//const { verify } = require("../utils/verify")
+const { networkConfig, developmentChains, VERIFICATION_BLOCK_CONFIRMATIONS } = require("../helper-hardhat-config"); //just data written not code and import every here,,so that we can change only there any fix data, like..see that File
+require("dotenv").config();
+const { verify } = require("../utils/verify");
 
 //localhost p jb bhi node dubara run krenge inhe run krna pdega kyuki purane ko bhul jayega but testnet p deploy ke bad dubara need nhi agr update n kiya ho contract
 
@@ -16,14 +12,12 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
   let erc20NTROMock, erc20NTROAddress;
 
   if (chainId == 31337) {
-    erc20NTROMock = await ethers.getContract("ERC20NTROMock"); //Gives latest deployed instance of this contract on hardhat n/w on prev. script. does this work on testnet ??
+    erc20NTROMock = await ethers.getContract("NeutronToken"); //Gives latest deployed instance of this contract on hardhat n/w on prev. script. does this work on testnet ??
     erc20NTROAddress = erc20NTROMock.address;
   } else {
     erc20NTROAddress = networkConfig[chainId]["erc20NTRO"]; //accessing data from  objects inside helper-hardhat-config.js
   }
-  const waitBlockConfirmations = developmentChains.includes(network.name)
-    ? 1
-    : VERIFICATION_BLOCK_CONFIRMATIONS;
+  const waitBlockConfirmations = developmentChains.includes(network.name) ? 1 : VERIFICATION_BLOCK_CONFIRMATIONS;
   //so that surely verified on etherscan until we will wait
 
   log("----------------------------------------------------");
@@ -35,19 +29,15 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
     waitConfirmations: waitBlockConfirmations,
   });
 
-  //   // Verify the deployment
-  //   if (
-  //     !developmentChains.includes(network.name) &&
-  //     process.env.ETHERSCAN_API_KEY
-  //   ) {
-  //     log("Verifying...");
-  //     await verify(raffle.address, arguments);
-  //   }
+  // Verify the deployment
+  if (!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
+    log("Verifying...");
+    await verify(stakingAndReward.address, arguments);
+    //etehrscan apikey hardhat deploy ke time config se khud utha lega hmne dal di h,,deploy ke time hi run hojayegi alg se api script run nhi krni
+  }
 
   const networkName = network.name == "hardhat" ? "localhost" : network.name;
-  log(
-    `Contract deployed to Network :${networkName} and Address: ${stakingAndReward.address}`
-  );
+  log(`Contract deployed to Network :${networkName} and Address: ${stakingAndReward.address}`);
   log("----------------------------------------------------");
 };
 
@@ -58,7 +48,7 @@ module.exports.tags = ["all", "staking"];
 //if we run this w/o running prev. script sath hi m on hardhat n/w,,phle wo akeli ya sath ki and ab dubara hardhat n/w run kiya prev. secript ke bina  to bhul gya ye to wo b/c gyi..
 //This Error will come
 /**Error: ERROR processing C:\Users\Dell\Projects\DeFiProjects\Staking-DeFi\staking-ethereum-side\deploy\01-deploy-staking-and-reward.js:
-Error: No Contract deployed with name ERC20NTROMock
+Error: No Contract deployed with name NeutronToken
     at Object.getContract (C:\Users\Dell\Projects\DeFiProjects\Staking-DeFi\staking-ethereum-side\node_modules\@nomiclabs\hardhat-ethers\src\internal\helpers.ts:447:11)
  */
 

@@ -13,6 +13,11 @@ const networkConfig = {
 
     erc20NTRO: "0x02D3d30bdEf23F087dE497645176C2C9171951Db",
   },
+  11155111: {
+    name: "sepolia",
+
+    erc20NTRO: "0x6060Ed3A25e9d6aD09DfCc53E25191078E1caceA",
+  },
   1: {
     name: "mainnet",
     keepersUpdateInterval: "30",
@@ -24,8 +29,7 @@ const VERIFICATION_BLOCK_CONFIRMATIONS = 6; //so that surely verified on ethersc
 const frontEndContractsFile =
   "../staking-frontend-next/constants/contractAddresses.json";
 const frontEndAbiFile = "../staking-frontend-next/constants/abi.json";
-const frontEndAbiERC20MockFile =
-  "../staking-frontend-next/constants/abiERC20Mock.json";
+
 const frontEndERC20ContractAddressesFile =
   "../staking-frontend-next/constants/erc20ContractAddresses.json";
 
@@ -35,6 +39,5 @@ module.exports = {
   VERIFICATION_BLOCK_CONFIRMATIONS,
   frontEndContractsFile,
   frontEndAbiFile,
-  frontEndAbiERC20MockFile,
   frontEndERC20ContractAddressesFile,
 };

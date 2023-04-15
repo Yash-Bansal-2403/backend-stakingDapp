@@ -5,8 +5,12 @@ coverage.json
 typechain
 typechain-types
 
+
 # Hardhat files
 cache
 artifacts
 deployments
+
+#other
+contractswithComments
 
