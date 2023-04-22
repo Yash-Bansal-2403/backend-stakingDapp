@@ -6,12 +6,42 @@ require("hardhat-deploy"); //this is hardhat-community plugin and also not comes
 
 const GOERLI_RPC_URL = process.env.GOERLI_RPC_URL;
 const SEPOLIA_RPC_URL = process.env.SEPOLIA_RPC_URL;
+const MUMBAI_RPC_URL = process.env.MUMBAI_RPC_URL;
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
-const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY || "Your etherscan API key";
-const POLYGONSCAN_API_KEY = process.env.POLYGONSCAN_API_KEY || "Your polygonscan API key";
+const ETHERSCAN_API_KEY =
+  process.env.ETHERSCAN_API_KEY || "Your etherscan API key";
+const POLYGONSCAN_API_KEY =
+  process.env.POLYGONSCAN_API_KEY || "Your polygonscan API key";
 const REPORT_GAS = process.env.REPORT_GAS || false;
 
 module.exports = {
+  defaultNetwork: "hardhat",
+  networks: {
+    localhost: {
+      chainId: 31337,
+      blockConfirmations: 1,
+      // gasPrice: 130000000000,
+    },
+
+    goerli: {
+      url: GOERLI_RPC_URL,
+      accounts: [PRIVATE_KEY],
+      chainId: 5,
+      blockConfirmations: 6,
+    }, //goerli network config
+    sepolia: {
+      url: SEPOLIA_RPC_URL,
+      accounts: [PRIVATE_KEY],
+      chainId: 11155111,
+      blockConfirmations: 6,
+    },
+    mumbai: {
+      url: MUMBAI_RPC_URL,
+      accounts: [PRIVATE_KEY],
+      chainId: 80001,
+      blockConfirmations: 6,
+    },
+  },
   solidity: {
     compilers: [
       {
@@ -23,71 +53,38 @@ module.exports = {
           },
         },
       },
+      {
+        version: "0.6.0", //for MockV3Aggregator
+      },
     ],
-  },
-  defaultNetwork: "hardhat",
-  networks: {
-    hardhat: {
-      // // If you want to do some forking, uncomment this
-      // forking: {
-      //   url: MAINNET_RPC_URL
-      // }
-      chainId: 31337,
-      // allowUnlimitedContractSize: true,
-      // accounts: { accountsBalance: "100000000000000000000000000" },
-    },
-    localhost: {
-      chainId: 31337,
-      // allowUnlimitedContractSize: true,
-    },
-
-    goerli: {
-      url: GOERLI_RPC_URL,
-      accounts: PRIVATE_KEY !== undefined ? [PRIVATE_KEY] : [],
-      //   accounts: {
-      //     mnemonic: MNEMONIC,
-      //   },
-      saveDeployments: true,
-      chainId: 5,
-    },
-    sepolia: {
-      url: SEPOLIA_RPC_URL,
-      accounts: PRIVATE_KEY !== undefined ? [PRIVATE_KEY] : [],
-      //   accounts: {
-      //     mnemonic: MNEMONIC,
-      //   },
-      saveDeployments: true,
-      //what and why save deployments ??
-      chainId: 11155111,
-    },
-  },
+  }, //using multiple solidity version
   etherscan: {
-    // npx hardhat verify --network <NETWORK> <CONTRACT_ADDRESS> <CONSTRUCTOR_PARAMETERS>
     apiKey: {
       goerli: ETHERSCAN_API_KEY,
+      polygonMumbai: POLYGONSCAN_API_KEY,
       sepolia: ETHERSCAN_API_KEY,
-      polygon: POLYGONSCAN_API_KEY,
     },
-  },
-  //this will run when we run our test
+  }, //setting up etherscan api
+
   gasReporter: {
-    enabled: REPORT_GAS,
+    enabled: true,
     currency: "USD",
     outputFile: "gas-report.txt",
-    noColors: false,
-    // coinmarketcap: process.env.COINMARKETCAP_API_KEY,
-  },
+    noColors: true,
+    // coinmarketcap: COINMARKETCAP_API_KEY,
+  }, //configuring hadhat-gas-reporter package
   namedAccounts: {
     deployer: {
       default: 0, // here this will by default take the first account as deployer
       1: 0, // similarly on mainnet it will take the first account as deployer. Note though that depending on how hardhat network are configured, the account 0 on one network can be different than on another
+      //for different chainIds we can specify what will be the default deployer account
+      31337: 0, //on hardhat deployer account will be 2nd account
     },
     player: {
       default: 1,
     },
-  },
-
+  }, //this property is used to name different accounts on our chainId
   mocha: {
-    timeout: 500000, // 500 seconds max for running tests
-  },
+    timeout: 500000,
+  }, //configuring mocha
 };

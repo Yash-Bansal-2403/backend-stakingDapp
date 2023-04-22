@@ -1,7 +1,6 @@
 const { run } = require("hardhat");
-//ye kya h smjh n aaya ?? video se dekhna
-//this verify function will be same for each verify bs ise deploy m call krenge args pass krke and verify kr dega
 
+//this verify function will be same for each verify
 const verify = async (contractAddress, args) => {
   console.log("Verifying contract...");
   try {

@@ -12,7 +12,6 @@ error Approved_Token_Balance_Not_Sufficient();
 error Withdrawal_Of_Staking_Balance_And_Reward_Paused();
 error Invalid_Amount_Entered();
 
-//Find Alternative for block.timestamp Or use Chainlink
 /**
  * @title StakingAndReward
  * @dev A smart contract that allows users to stake ERC20 tokens and earn rewards
@@ -98,8 +97,7 @@ contract StakingAndReward is ReentrancyGuard {
     ) public updateReward(msg.sender) returns (bool) {
         if (amount > i_stakingToken.allowance(msg.sender, address(this))) {
             revert Approved_Token_Balance_Not_Sufficient();
-        } //is this redundant or necessary ??
-        //error can also be reverted from token contract,but we will revert from here itself if this is the case.
+        }
 
         bool success = i_stakingToken.transferFrom(
             msg.sender,

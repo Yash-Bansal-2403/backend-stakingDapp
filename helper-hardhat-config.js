@@ -8,30 +8,31 @@ const networkConfig = {
   31337: {
     name: "localhost",
   },
-  5: {
-    name: "goerli",
 
-    erc20NTRO: "0x02D3d30bdEf23F087dE497645176C2C9171951Db",
-  },
   11155111: {
     name: "sepolia",
 
-    erc20NTRO: "0x6060Ed3A25e9d6aD09DfCc53E25191078E1caceA",
+    erc20AT: "address of Alpha token deployed on sepolia network",
   },
   1: {
     name: "mainnet",
     keepersUpdateInterval: "30",
+  },
+  80001: {
+    name: "mumbai",
+    keepersUpdateInterval: "30",
+    erc20AT: "0x0EB51D67B101e23c2eAa61618f550a0527197bdd",
   },
 };
 
 const developmentChains = ["hardhat", "localhost"];
 const VERIFICATION_BLOCK_CONFIRMATIONS = 6; //so that surely verified on etherscan until we will wait
 const frontEndContractsFile =
-  "../staking-frontend-next/constants/contractAddresses.json";
-const frontEndAbiFile = "../staking-frontend-next/constants/abi.json";
+  "../frontend-staking/constants/contractAddresses.json";
+const frontEndAbiFile = "../frontend-staking/constants/abi.json";
 
 const frontEndERC20ContractAddressesFile =
-  "../staking-frontend-next/constants/erc20ContractAddresses.json";
+  "../frontend-staking/constants/erc20ContractAddresses.json";
 
 module.exports = {
   networkConfig,
